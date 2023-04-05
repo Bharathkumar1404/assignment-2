@@ -12,12 +12,13 @@ import numpy as np
 
 def readingfile(file):
     '''
-    This function creates a dataframe from given pathfile
+    This function creates a dataframe from given pathfile and reading the file 
+    and indexing and droping the indexs and locating the certain countries
 
     Parameters
     ----------
     file : STR
-        String of filepath.
+        String of  csv filepath.
 
     Returns
     -------
@@ -38,17 +39,17 @@ def readingfile(file):
 def barplot(data, titles):
     '''
     
-
+ploting the bar plot by enumerate the data 
     Parameters
     ----------
     data : Str
-        String with certain years.
+        String will do subplot and having thw width certain years.
     titles : list 
         list cointains y label and title of the bar plot.
 
     Returns
     -------
-    bar-plot.
+    bar-plot with certain countries and years.
 
     '''
     plt.figure()
@@ -69,12 +70,13 @@ def barplot(data, titles):
 
 def transpose(data):
     '''
-    
+     it transpose the given data and returns the transposed  data 
 
     Parameters
     ----------
     data : pandas.Dataframe
-        transpose the given data.
+        transpose the given data and locating the index number and 
+        transpose the data .
 
     Returns
     -------
@@ -83,7 +85,7 @@ def transpose(data):
 
     '''
     data_tr=pd.DataFrame.transpose(data)
-    #=data_tr.header=data.iloc[0, :]
+    data_tr.columns=data_tr.iloc[0, :]
     data_tr=data_tr.iloc[1:,:]
     
     return data_tr
@@ -93,17 +95,19 @@ def country(dataset,names,country_name):
 
     Parameters
     ----------
-    dataset : TYPE
-        DESCRIPTION.
-    names : TYPE
-        DESCRIPTION.
-    country_name : TYPE
-        DESCRIPTION.
+    dataset : str
+        using the transposed data and locate the certain years and countries.
+    names : list
+        it contains the names of the data and represent the names of 
+        the indicators.
+    country_name : str
+        it returns the values of data to certain country with different 
+        types of indicators.
 
     Returns
     -------
-    country : TYPE
-        DESCRIPTION.
+    country : str
+        it returns a country  with differnt types of indicators .
 
     '''
     country=pd.DataFrame()
@@ -112,6 +116,24 @@ def country(dataset,names,country_name):
     
     return country
 def correlation_heatmap(data,title,color):
+    '''
+    
+
+    Parameters
+    ----------
+    data : str
+        certain country with different indicators shows the 
+        correlation coefficient.
+    title : str
+        name of the country  in difinte name.
+    color : str
+        it plots the heatmap with given type of color.
+
+    Returns
+    -------
+    returns the correlation heatmap with certain values .
+
+    '''
     
     
     for c in data.columns:
@@ -132,161 +154,102 @@ def correlation_heatmap(data,title,color):
             
     plt.title(title)
     plt.show()
-  
+#required years for the line plot and bar plot 
 years1=['1990','1992','1994','1998','2000','2002','2004','2006','2008',
         '2010','2012','2014','2016','2018','2020']
+years2=['1990','1992','1994','1998','2000','2002','2004','2006','2008',
+        '2010','2012','2014']
 years=['1995','2000','2005','2010','2015','2020']
 
-
+#reading the file path and returns the datframe
 Electricity=readingfile('Electricity_Access.csv')
-t=Electricity.describe()
-print(t)
-Electricity_tr=transpose(Electricity)
-Electricity_B=Electricity.loc[:,years]
-Electricity_L=Electricity_tr.loc[years1,:]
-
-
-
 Agriculture_Land=readingfile('Agriculture_Land.csv')
-Agriculture_Land_tr=transpose(Agriculture_Land)
-Agriculture_Land_L=Agriculture_Land_tr.loc[years1,:]
-Agriculture_Land_B=Agriculture_Land.loc[:,years]
-
-
 Total_Pop=readingfile('Total_Pop.csv')
-Total_Pop_tr=transpose(Total_Pop)
-Total_Pop_L=Total_Pop_tr.loc[years1,:]
-Total_Pop_B=Total_Pop.loc[:,years]
-
-
 Death_rate=readingfile('Death_rate.csv')
-Death_rate_tr=transpose(Death_rate)
-Death_rate_L=Death_rate_tr.loc[years1,:]
-Death_rate_B=Death_rate.loc[:,years]
-
-
-Electric=readingfile('Eletric power consumption.csv')
-Electric_tr=transpose(Electric)
-Electric_L=Electric_tr.loc[years1,:]
-Electric_B=Electric.loc[:,years]
-
-
+Electric_consumption=readingfile('Eletric power consumption.csv')
 Annual_freshwater=readingfile('Annual_freshwater.csv')
-Annual_freshwater_tr=transpose(Annual_freshwater)
-Annual_freshwater_L=Annual_freshwater_tr.loc[years1,:]
-Annual_freshwater_B=Annual_freshwater.loc[:,years]
-
-Electricity_production=readingfile('Electrcity production from oil and gas.csv')
-Electricity_production_tr=transpose(Electricity_production)
-Electricity_production_L=Electricity_production_tr.loc[years1,:]
-Electricity_production_B=Electricity_production.loc[:,years]
-
-
-nitrous=readingfile('nitrous.csv')
-nitrous_tr=transpose(nitrous)
-nitrous_L=nitrous_tr.loc[years1,:]
-nitrous_B=nitrous.loc[:,years]
-
-
+nitrous_oxide_emission=readingfile('nitrous.csv')
 Forest_area=readingfile('forest area.csv')
+Electricity_production=readingfile('Electrcity production from oil and gas.csv')
+
+
+#transposing the datframe and returning the datframe
+Electricity_tr=transpose(Electricity)
+Agriculture_Land_tr=transpose(Agriculture_Land)
+Total_Pop_tr=transpose(Total_Pop)
+Death_rate_tr=transpose(Death_rate)
+Electric_consumption_tr=transpose(Electric_consumption)
+Annual_freshwater_tr=transpose(Annual_freshwater)
+Electricity_production_tr=transpose(Electricity_production)
+nitrous_tr=transpose(nitrous_oxide_emission)
 Forest_area_tr=transpose(Forest_area)
 
 
+#plotting the datframe and returns the line graph dataframe
+
+Electricity_production_L=Electricity_production_tr.loc[years2,:]
+
+
+
+# plotting the datagframe in bar plot type datframe
+Agriculture_Land_B=Agriculture_Land.loc[:,years]
+Total_Pop_B=Total_Pop.loc[:,years]
+nitrous_B=nitrous_oxide_emission.loc[:,years]
+
+
+#it describes the dataframe and returns the values of mean,max,std,min,count
+# and all the values
+total_pop_describe=Total_Pop.describe()
+print(total_pop_describe)
+Electricity_production=Electricity_production.describe()
+print(Electricity_production
+      )
+
+
+#slicing the percentage values 
 for i in Total_Pop_B.columns:
     Total_Pop_B[i]=Total_Pop_B[i]/1000000
+#it represents the  y label and plot tilte 
 titles=['population','Total Population']
+#plotintg the barplot 
 bar_population=barplot(Total_Pop_B,titles)
-
+#slicing the percentage values 
 for i in Agriculture_Land_B.columns:
     Agriculture_Land_B[i]=Agriculture_Land_B[i]/1000000
-titles=['Agriculture','Agriculturein SQ.KM']
+#it represents the  y label and plot tilte 
+titles=['% Agri_land','Agricultural land (% of land area)']
+#plotintg the barplot
 bar_Agriculture=barplot(Agriculture_Land_B,titles)
-
-titles=['%nitrous','nitrous']
+#it represents the  y label and plot tilte 
+titles=['emission of nitrous',
+        'Nitrous oxide emissions (thousand metric tons of CO2 equivalent)']
+#plotintg the barplot
 bar_n=barplot(nitrous_B,titles)
 
 
-#line plot
-plt.figure()
-for i in Electricity_L.columns:
-    plt.plot(Electricity_L.index,Electricity_L[i], label=i, linestyle=':')
-plt.xlabel('Year')
-plt.ylabel('% Electricity')
-plt.title('Electricity_access')
-plt.xticks(Electricity_L.index[::2])
-plt.legend(title='Country',bbox_to_anchor=(1, 1))
-plt.show()
 
-plt.figure()
-for i in Agriculture_Land_L.columns:
-    plt.plot(Agriculture_Land_L.index,Agriculture_Land_L[i], 
-             label=i, linestyle=':')
-plt.xlabel('Year')
-plt.ylabel('% Agriculture')
-plt.title('Agriculture_land')
-plt.xticks(Agriculture_Land_L.index[::2])
-plt.legend(title='Country',bbox_to_anchor=(1, 1))
-plt.show()
-
-plt.figure()
-for i in Total_Pop_L.columns:
-    plt.plot(Total_Pop_L.index,Total_Pop_L[i],label=i, linestyle=':')
-plt.xlabel('Year')
-plt.ylabel('Pop_rate')
-plt.title('Total_Pop')
-plt.xticks(Total_Pop_L.index[::2])
-plt.legend(title='Country',bbox_to_anchor=(1, 1))
-plt.show()
-
-plt.figure()
-for i in Electric_L.columns:
-    plt.plot(Electric_L.index,Electric_L[i], label=i, linestyle=':')
-plt.xlabel('Year')
-plt.ylabel('E_Consumption')
-plt.title('Electric-consumption')
-plt.xticks(Total_Pop_L.index[::2])
-plt.legend(title='Country',bbox_to_anchor=(1, 1))
-plt.show()
-
-plt.figure()
-for i in Annual_freshwater_L.columns:
-    plt.plot(Annual_freshwater_L.index,Annual_freshwater_L[i], 
-             label=i, linestyle=':')
-plt.xlabel('Year')
-plt.ylabel('% Freshwater')
-plt.title('Annual_freshwater')
-plt.xticks(Total_Pop_L.index[::2])
-plt.legend(title='Country',bbox_to_anchor=(1, 1))
-plt.show()
-
-plt.figure()
-for i in Death_rate_L.columns:
-    plt.plot(Death_rate_L.index,Death_rate_L[i], label=i, linestyle=':')
-plt.xlabel('Year')
-plt.ylabel('% Death')
-plt.title('Death_rate')
-plt.xticks(Total_Pop_L.index[::2])
-plt.legend(title='Country',bbox_to_anchor=(1, 1))
-plt.show()
-
-
+#ploting the line plot and showing the x label amd y label 
+#and titke of the plot and shows the plot
 plt.figure()
 for i in Electricity_production_L.columns:
     plt.plot(Electricity_production_L.index,Electricity_production_L[i], 
-             label=i, linestyle=':')
+             label=i, linestyle=':',marker='*')
 plt.xlabel('Year')
-plt.ylabel('% Production')
-plt.title('Production_rate')
-plt.xticks(Total_Pop_L.index[::2])
+plt.ylabel('%Production_rate')
+plt.title('Electricity_Production_rate from oil&gas')
+plt.xticks(Electricity_production_L.index[::-2])
 plt.legend(title='Country',bbox_to_anchor=(1, 1))
 plt.show()
 
-#correlation
-names=['Agric_land','Total_pop','Electric_consum',
-       'Annual fresh water','forest_area','nitrous']
+#ploting the correlation coefficint of the dataframe and
+# represent the names for the plot 
+#name represnts the names 
+#datsets are the transposed data
+names=['Agric_land','Total_pop','Electric_consumption',
+       'Annual fresh water','forest_area','nitrous_oxide_emission']
 
 dataset=[Agriculture_Land_tr,Total_Pop_tr,
-         Electric_tr,Annual_freshwater_tr,Forest_area_tr,nitrous_tr]
+         Electric_consumption_tr,Annual_freshwater_tr,Forest_area_tr,nitrous_tr]
 
 India= country(dataset,names,'India')
 correlation_heatmap(India,'India','ocean_r')
@@ -296,4 +259,3 @@ correlation_heatmap(Argentina,'Argentina','gist_rainbow')
 
 Brazil=country(dataset,names,'Brazil')
 correlation_heatmap(Brazil,'Brazil','YlGnBu')
-
